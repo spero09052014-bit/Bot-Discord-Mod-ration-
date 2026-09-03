@@ -1,0 +1,44 @@
+# ================================================================
+# Fichier de déploiement Render — Bot Kōtei 🍥
+# ================================================================
+# Permet de déployer le bot en quelques clics via "New +" >
+# "Blueprint" sur Render, en pointant vers ce dépôt GitHub.
+#
+# ⚠️ Type "web" (et pas "worker") : c'est le SEUL type de service
+#    gratuit chez Render. En échange, il s'endort après 15 minutes
+#    sans requête HTTP entrante — d'où le mini serveur Flask
+#    (keep_alive.py) et le ping régulier d'UptimeRobot à mettre en
+#    place juste après le déploiement (voir les explications de
+#    Claude).
+#
+# Les variables marquées "sync: false" ne sont PAS lues depuis ce
+# fichier (il est public sur GitHub !). Render te demandera de les
+# saisir toi-même dans son interface lors de la création du
+# service — c'est cette interface qui remplace le rôle du .env
+# une fois en production.
+# ================================================================
+
+services:
+  - type: web
+    name: kotei-bot
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python bot.py"
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: FOUNDER_IDS
+        sync: false
+      - key: STAFF_ROLE_NAME
+        sync: false
+      - key: MODLOG_CHANNEL_ID
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTISPAM_SEUIL
+        sync: false
+      - key: ANTISPAM_FENETRE_SECONDES
+        sync: false
+      - key: ANTISPAM_MUTE_MINUTES
+        sync: false
